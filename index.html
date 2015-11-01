@@ -10,10 +10,10 @@
 
     <link rel="stylesheet" href="static/thebe/site.css" type="text/css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.6.0/codemirror.min.css" type="text/css"/>
-    
+
     <!-- This example uses requirejs to dynamically load scripts -->
     <!-- which is good for local development, because we don't need to rebuild everything when we make a change. -->
-    
+
     <!-- See examples/build.html for an example of using the compiled/built javascript -->
     <!-- that does not require any knowledge or use of require.js -->
 
@@ -27,7 +27,7 @@
       define('jquery', [], jQuery);
 
       require.config({
-          
+
           baseUrl: 'static/',
           paths: {
             underscore : 'components/underscore/underscore-min',
@@ -66,13 +66,15 @@
       require(['main'], function(main){
           // To run this locally, replace this url with the url of your notebook server or tmpnb server
           thebe = new main.Thebe({
-            url:"https://tmp39.tmpnb.org",
+            // url:"https://tmp39.tmpnb.org",
             // url:"https://192.168.99.100:8000",
             // use the following settings if you are running from a
             // single-user Jupyter notebook server
-            // url:"http://localhost:8888",
-            // tmpnb_mode: false
-            debug: true
+            url:"http://localhost:8888",
+            tmpnb_mode: false,
+            debug: true,
+            kernel_name: "ir",
+            codemirror_mode_name: "r"
           });
 
       });
@@ -96,85 +98,20 @@
 <p> A really simple example:</p>
 
 <pre data-executable>
-from ipywidgets import *
-IntSlider()
+  getwd()
+  data.df <- data.frame(Plant = c("Plant1", "Plant1", "Plant1", "Plant2", "Plant2",
+      "Plant2"), Type = c(1, 2, 3, 1, 2, 3), Axis1 = c(0.2, -0.4, 0.8, -0.2, -0.7,
+      0.1), Axis2 = c(0.5, 0.3, -0.1, -0.3, -0.1, -0.8))
+
+    color_foo <- colorRampPalette(c("lightblue", "darkblue"))
+    colors <- color_foo(3)
+
+    plot(range(data.df[, 3]), range(data.df[, 4]), xlab = "Axis 1", ylab = "Axis 2",
+        type = "n")
+    points(data.df$Axis1, data.df$Axis2, pch = c(1, 2)[data.df$Plant], col = colors[data.df$Type])
+    legend("topright", legend = c("Plant1", "Plant2"), pch = 1:2)
+    legend("bottomright", legend = c("Type1", "Type2", "Type3"), pch = 20, col = colors)
 </pre>
-
-<pre data-executable id="hello-example">
-z = "hello", 4+4
-print(z)
-
-</pre>
-<br>
-<p> Other Example Pages</p>
-<ul>
-  <li><a href="examples/matplotlib-3d.html">Matplotlib-3d</a></li>
-  <li><a href="examples/t-sne-require.html">Machine Learning</a></li>
-  <li><a href="examples/widgets-built.html">Built</a> All the Thebe javascript compiled into one file</li>
-</ul>
-<br>
-
-<p>A more complicated example:</p>
-
-<pre data-executable>
-%matplotlib inline
-import matplotlib.pyplot as plt
-import numpy as np
-x = np.linspace(0, 3*np.pi, 500)
-plt.plot(x, np.sin(x**2))
-plt.title('A simple chirp');
-</pre>
-
-<p>An interactive example:</p>
-
-<pre data-executable>
-from __future__ import print_function
-from IPython.html.widgets import interact, interactive, fixed
-from IPython.html import widgets
-@interact(x=True, y=1.0)
-def g(x, y):
-    print(x, y)
-</pre>
-
-<p>An example with audio:</p>
-
-<pre data-executable>
-%matplotlib inline
-import matplotlib.pyplot as plt
-import numpy as np
-from IPython.html.widgets import interactive
-from IPython.display import Audio, display
-import numpy as np
-
-def beat_freq(f1=220.0, f2=224.0):
-    max_time = 3
-    rate = 8000
-    times = np.linspace(0,max_time,rate*max_time)
-    signal = np.sin(2*np.pi*f1*times) + np.sin(2*np.pi*f2*times)
-    print(f1, f2, abs(f1-f2))
-    display(Audio(data=signal, rate=rate))
-    return signal
-v = interactive(beat_freq, f1=(200.0,300.0), f2=(200.0,300.0))
-display(v)
-</pre>
-
-<p> An example of code that is not executable</p>
-<pre data-not-executable>
-print("Na, you cannot run this sorry")
-</pre>
-
-<p> An example of code that is read only but executable</p>
-<pre data-read-only data-executable>
-print("Nope, you can't edit this sorry! But you can run it.")
-</pre>
-
-<p> Mathjax support built in:</p>
-
-<p>\begin{align}
-\dot{x} &amp; = \sigma(y-x) \
-\dot{y} &amp; = \rho x - y - xz \
-\dot{z} &amp; = -\beta z + xy
-\end{align}</p>
 
 </body>
 
